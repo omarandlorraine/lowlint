@@ -1,5 +1,6 @@
 use lang_c::visit::Visit;
 use lang_c::ast::InitDeclarator;
+use lang_c::ast::CallExpression;
 use lang_c::span::Span;
 use lang_c::ast::BinaryOperatorExpression;
 use lang_c::loc;
@@ -69,5 +70,16 @@ impl<'ast> Visit<'ast> for VarInitCheck {
             }
         }
         visit_expression(self, expression, span);
+    }
+
+    fn visit_call_expression(
+        &mut self,
+        call_expression: &'ast CallExpression,
+        _span: &'ast Span,
+    ) {
+        use lang_c::visit::visit_expression;
+        for argument in &call_expression.arguments {
+            visit_expression(self, &argument.node, &argument.span);
+        }
     }
 }
