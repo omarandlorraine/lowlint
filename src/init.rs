@@ -2,16 +2,19 @@ use lang_c::visit::Visit;
 use lang_c::ast::InitDeclarator;
 use lang_c::span::Span;
 use lang_c::ast::BinaryOperatorExpression;
+use lang_c::loc;
 
 /// Checks that the variables have been initialized before their first use
 pub struct VarInitCheck {
+    pub problems: Vec<(Span, String)>,
     uninit: Vec<String>
 }
 
 impl Default for VarInitCheck {
     fn default() -> Self {
         Self {
-            uninit: vec![]
+            problems: vec![],
+            uninit: vec![],
         }
     }
 }
@@ -60,9 +63,7 @@ impl<'ast> Visit<'ast> for VarInitCheck {
         use lang_c::visit::visit_expression;
         match &expression {
             Identifier(identifier) => {
-                if self.uninit.contains(&identifier.node.name) {
-                    println!("{:?} Use before initialization: {}", &span, &identifier.node.name);
-                }
+                self.problems.push((*span, format!("{:?} Use before initialization: {}", &span, &identifier.node.name)));
             }
             _ => {
             }
