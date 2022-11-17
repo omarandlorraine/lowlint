@@ -10,7 +10,18 @@ use lang_c::visit::Visit;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let config = Config::default();
+
+    let mut config = Config::default();
+
+    for arg in &args {
+        if &arg[..2] == "-D" {
+            config.cpp_options.push(arg.clone());
+        }
+        if &arg[..2] == "-I" {
+            config.cpp_options.push(arg.clone());
+        }
+    }
+    
     for file in args {
         let past = parse(&config, file);
         if let Ok(ref ast) = past {
