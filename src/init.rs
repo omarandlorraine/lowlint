@@ -5,18 +5,10 @@ use lang_c::span::Span;
 use lang_c::ast::BinaryOperatorExpression;
 
 /// Checks that the variables have been initialized before their first use
+#[derive(Default)]
 pub struct VarInitCheck {
     pub problems: Vec<(Span, String)>,
     uninit: Vec<String>
-}
-
-impl Default for VarInitCheck {
-    fn default() -> Self {
-        Self {
-            problems: vec![],
-            uninit: vec![],
-        }
-    }
 }
 
 impl<'ast> Visit<'ast> for VarInitCheck {
