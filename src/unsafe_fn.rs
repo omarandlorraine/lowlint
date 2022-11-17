@@ -35,14 +35,10 @@ impl<'ast> Visit<'ast> for UnsafeFnCall {
     ) {
         use lang_c::ast::Expression::Identifier;
         use lang_c::visit::visit_expression;
-        match &expression {
-            Expression::Call(call) => {
-                match &call.node.callee.node {
-                    Identifier(fn_name) => self.check_function(span, &fn_name.node.name),
-                    _ => {}
-                }
+        if let Expression::Call(call) = &expression {
+            if let Identifier(fn_name) = &call.node.callee.node {
+                self.check_function(span, &fn_name.node.name)
             }
-            _ => {}
         }
         visit_expression(self, expression, span);
     }

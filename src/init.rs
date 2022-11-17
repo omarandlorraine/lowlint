@@ -20,11 +20,8 @@ impl<'ast> Visit<'ast> for VarInitCheck {
         use lang_c::ast::DeclaratorKind::Identifier;
         use lang_c::visit::visit_init_declarator;
         if init_declarator.initializer.is_none() {
-            match &init_declarator.declarator.node.kind.node {
-                Identifier(node) => {
-                    self.uninit.push(node.node.name.clone());
-                }
-                _ => {}
+            if let Identifier(node) = &init_declarator.declarator.node.kind.node {
+                self.uninit.push(node.node.name.clone());
             }
         }
         visit_init_declarator(self, init_declarator, span);
@@ -37,11 +34,8 @@ impl<'ast> Visit<'ast> for VarInitCheck {
     ) {
         use lang_c::visit::visit_binary_operator_expression;
         use lang_c::ast::Expression::Identifier;
-        match &binary_operator_expression.lhs.node {
-            Identifier(identifier) => {
-                self.uninit.retain(|n| n != &identifier.node.name);
-            }
-            _ => {}
+        if let Identifier(identifier) = &binary_operator_expression.lhs.node {
+            self.uninit.retain(|n| n != &identifier.node.name);
         }
         visit_binary_operator_expression(self, binary_operator_expression, span);
     }
@@ -53,12 +47,8 @@ impl<'ast> Visit<'ast> for VarInitCheck {
     ) {
         use lang_c::ast::Expression::Identifier;
         use lang_c::visit::visit_expression;
-        match &expression {
-            Identifier(identifier) => {
-                self.problems.push((*span, format!("{:?} Use before initialization: {}", &span, &identifier.node.name)));
-            }
-            _ => {
-            }
+        if let Identifier(identifier) = &expression {
+            self.problems.push((*span, format!("{:?} Use before initialization: {}", &span, &identifier.node.name)));
         }
         visit_expression(self, expression, span);
     }
