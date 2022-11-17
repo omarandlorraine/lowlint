@@ -17,7 +17,7 @@ impl Default for UnsafeFnCall {
 
 impl UnsafeFnCall {
     fn check_function(&mut self, span: &Span, fn_name: &String) {
-        for t in vec!["atoi", "atof", "atol", "atoll"] {
+        for t in &["atoi", "atof", "atol", "atoll"] {
             if fn_name == t {
                 self.problems.push((*span, format!("call to {} is considered unsafe.", &fn_name)));
                 self.problems.push((*span, format!("behavior of {} is undefined in case of overflow.", &fn_name)));
@@ -25,11 +25,11 @@ impl UnsafeFnCall {
         }
 
         if fn_name == "atoi" {
-            self.problems.push((*span, format!("atoi does not detect or report errors; consider using strtol.")));
+            self.problems.push((*span, "atoi does not detect or report errors; consider using strtol.".to_string()));
         }
 
         if fn_name == "gets" {
-            self.problems.push((*span, format!("never use gets(). Its behavior is extremely dangerous.")));
+            self.problems.push((*span, "never use gets(). Its behavior is extremely dangerous.".to_string()));
         }
     }
 }
