@@ -3,16 +3,9 @@ use lang_c::visit::Visit;
 use lang_c::span::Span;
 
 /// Checks that the variables have been initialized before their first use
+#[derive(Default)]
 pub struct UnsafeFnCall {
     pub problems: Vec<(Span, String)>,
-}
-
-impl Default for UnsafeFnCall {
-    fn default() -> Self {
-        Self {
-            problems: vec![],
-        }
-    }
 }
 
 impl UnsafeFnCall {
