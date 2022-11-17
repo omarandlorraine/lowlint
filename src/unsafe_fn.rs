@@ -8,14 +8,12 @@ use lang_c::loc;
 /// Checks that the variables have been initialized before their first use
 pub struct UnsafeFnCall {
     pub problems: Vec<(Span, String)>,
-    uninit: Vec<String>
 }
 
 impl Default for UnsafeFnCall {
     fn default() -> Self {
         Self {
             problems: vec![],
-            uninit: vec![],
         }
     }
 }
