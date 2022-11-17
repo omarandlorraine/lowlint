@@ -1,9 +1,6 @@
 use lang_c::ast::Expression;
 use lang_c::visit::Visit;
-use lang_c::ast::InitDeclarator;
 use lang_c::span::Span;
-use lang_c::ast::BinaryOperatorExpression;
-use lang_c::loc;
 
 /// Checks that the variables have been initialized before their first use
 pub struct UnsafeFnCall {
