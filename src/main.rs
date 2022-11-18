@@ -9,8 +9,7 @@ use crate::init::*;
 use lang_c::visit::Visit;
 
 fn main() {
-
-    fn arg4pp(arg: &String) -> bool {
+    fn arg4pp(arg: &str) -> bool {
         if &arg[..2] == "-D" {
             return true;
         }
@@ -26,13 +25,13 @@ fn main() {
     let mut config = Config::default();
 
     for arg in &args {
-        if arg4pp(&arg) {
+        if arg4pp(arg) {
             config.cpp_options.push(arg.clone());
         } else {
             files.push(arg.clone());
         }
     }
-    
+
     for file in files {
         let past = parse(&config, file);
         if let Ok(ref ast) = past {
