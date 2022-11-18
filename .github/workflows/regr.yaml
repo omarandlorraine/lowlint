@@ -1,0 +1,17 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    
+jobs:
+  regression_testing:
+    name: regression_testing
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: regression test uninitialized_variables
+        uses: actions-rs/cargo@v1
+        run: cd regression_tests/uninitialized_variables/ && ./run.sh
