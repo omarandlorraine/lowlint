@@ -9,7 +9,6 @@ use crate::init::*;
 use lang_c::visit::Visit;
 
 fn main() {
-
     fn arg4pp(arg: &String) -> bool {
         if &arg[..2] == "-D" {
             return true;
@@ -32,7 +31,7 @@ fn main() {
             files.push(arg.clone());
         }
     }
-    
+
     for file in files {
         let past = parse(&config, file);
         if let Ok(ref ast) = past {
